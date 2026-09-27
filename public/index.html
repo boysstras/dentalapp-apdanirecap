@@ -1,0 +1,1204 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DentRecap - Input Rekam Medis</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+         :root {
+            color-scheme: light;
+            --ink: #493d43;
+            --muted: #8b777f;
+            --rose: #d95688;
+            --rose-dark: #b84270;
+            --rose-soft: #f9dce7;
+            --paper: #fffdfc;
+            --line: #efd5de;
+            --sage: #789381;
+        }
+        
+        * {
+            box-sizing: border-box;
+        }
+        
+        body {
+            min-height: 100vh;
+            color: var(--ink);
+            font-family: 'Nunito', sans-serif;
+            background: radial-gradient(ellipse at 8% 12%, rgba(246, 194, 211, .62), transparent 35%), radial-gradient(ellipse at 93% 67%, rgba(222, 232, 220, .48), transparent 32%), #fbf0f2;
+        }
+        
+        .page-shell {
+            max-width: 1060px;
+        }
+        
+        [hidden] {
+            display: none !important;
+        }
+        
+        .auth-gate {
+            display: grid;
+            min-height: 100vh;
+            place-items: center;
+            padding: 24px;
+            background: radial-gradient(ellipse at 15% 15%, rgba(246, 194, 211, .68), transparent 38%), #fbf0f2;
+        }
+        
+        .auth-panel {
+            width: min(100%, 410px);
+            padding: 32px;
+            border: 1px solid #f1d6df;
+            border-top: 4px solid #e994ad;
+            border-radius: 18px;
+            background: rgba(255, 253, 253, .97);
+            box-shadow: 0 18px 48px rgba(126, 66, 88, .12);
+            animation: arrive .55s ease-out both;
+        }
+        
+        .auth-mascot {
+            display: grid;
+            width: 62px;
+            height: 62px;
+            margin: 0 auto 14px;
+            place-items: center;
+            border-radius: 50%;
+            background: #fbe2ea;
+            font-size: 2rem;
+        }
+        
+        .auth-panel h1 {
+            margin: 0;
+            color: #743d55;
+            font-family: 'Quicksand', 'Nunito', sans-serif;
+            font-size: 1.55rem;
+            font-weight: 700;
+            text-align: center;
+        }
+        
+        .auth-panel>p {
+            margin: 7px 0 22px;
+            color: var(--muted);
+            text-align: center;
+        }
+        
+        .auth-message {
+            min-height: 1.4rem;
+            margin: 10px 0 0;
+            color: var(--rose-dark);
+            font-size: .88rem;
+            text-align: center;
+        }
+        
+        .password-entry {
+            display: flex;
+            align-items: stretch;
+        }
+        
+        .password-entry .form-control {
+            min-width: 0;
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+        
+        .password-toggle {
+            width: 48px;
+            flex: 0 0 48px;
+            border: 1px solid var(--line);
+            border-left: 0;
+            border-radius: 0 9px 9px 0;
+            color: var(--rose-dark);
+            background: #fff8fa;
+            font-size: 1.1rem;
+        }
+        
+        .password-toggle:hover {
+            background: #fbe8ee;
+        }
+        
+        .hero {
+            position: relative;
+            min-height: 190px;
+            padding: 27px 34px;
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, .8);
+            border-radius: 18px;
+            background: linear-gradient(112deg, rgba(255, 250, 250, .97), rgba(249, 218, 229, .94));
+            box-shadow: 0 12px 32px rgba(151, 74, 105, .1);
+            animation: arrive .7s ease-out both;
+        }
+        
+        .hero-copy {
+            position: relative;
+            z-index: 1;
+            max-width: min(58%, 610px);
+        }
+        
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin: 0 0 9px;
+            padding: 5px 10px;
+            border: 1px solid #f1c5d4;
+            border-radius: 999px;
+            color: var(--rose-dark);
+            background: rgba(255, 244, 248, .9);
+            font-size: .76rem;
+            font-weight: 800;
+            letter-spacing: 0;
+            text-transform: uppercase;
+        }
+        
+        .eyebrow::before {
+            content: "♥";
+            color: #e66e99;
+            font-size: .78rem;
+        }
+        
+        h1,
+        h2,
+        h4 {
+            font-family: 'Quicksand', 'Nunito', sans-serif;
+            font-weight: 700;
+        }
+        
+        .hero h1 {
+            margin: 0;
+            color: #743d55;
+            font-size: 2rem;
+        }
+        
+        .hero h1::after {
+            content: " ✿";
+            display: inline-block;
+            color: #e96e99;
+            font-size: 1.1rem;
+            vertical-align: top;
+            animation: twinkle 2.7s ease-in-out infinite;
+        }
+        
+        .hero-copy p:last-child {
+            margin: 7px 0 0;
+            color: var(--muted);
+        }
+        
+        .mascot-stage {
+            position: absolute;
+            right: 30px;
+            bottom: -3px;
+            width: 245px;
+            height: 176px;
+            pointer-events: none;
+        }
+        
+        .mascot-tooth {
+            position: absolute;
+            right: 78px;
+            bottom: 10px;
+            font-size: 7rem;
+            line-height: 1;
+            filter: drop-shadow(0 8px 5px rgba(144, 99, 111, .13));
+            animation: tooth-float 3.8s ease-in-out infinite;
+        }
+        
+        .mascot-fairy {
+            position: absolute;
+            top: 13px;
+            right: 18px;
+            font-size: 3.1rem;
+            transform-origin: 55% 85%;
+            animation: fairy-drift 4.6s ease-in-out infinite;
+        }
+        
+        .sparkle {
+            position: absolute;
+            color: #c49381;
+            animation: twinkle 2.3s ease-in-out infinite;
+        }
+        
+        .sparkle-one {
+            top: 29px;
+            left: 38px;
+            font-size: 1.25rem;
+        }
+        
+        .sparkle-two {
+            top: 83px;
+            right: 1px;
+            font-size: .9rem;
+            animation-delay: .8s;
+        }
+        
+        .form-panel,
+        .records-panel {
+            border: 1px solid rgba(255, 255, 255, .95);
+            border-top: 3px solid #e994ad;
+            border-radius: 14px;
+            background: rgba(255, 253, 253, .95);
+            box-shadow: 0 10px 27px rgba(126, 66, 88, .075);
+        }
+        
+        .form-panel {
+            animation: arrive .7s .1s ease-out both;
+        }
+        
+        .form-panel .card-body {
+            padding: 26px;
+        }
+        
+        label {
+            margin-bottom: 7px;
+            color: #66555d;
+            font-size: .9rem;
+            font-weight: 700;
+        }
+        
+        .form-control,
+        .form-select {
+            min-height: 45px;
+            border-color: var(--line);
+            border-radius: 9px;
+            color: var(--ink);
+            background-color: #fff;
+        }
+        
+        .form-control:focus,
+        .form-select:focus {
+            border-color: #e889a8;
+            box-shadow: 0 0 0 .2rem rgba(217, 86, 136, .16);
+        }
+        
+        .btn-primary {
+            min-height: 46px;
+            border-color: var(--rose);
+            border-radius: 9px;
+            background: var(--rose);
+            font-weight: 800;
+            transition: background-color .2s ease, transform .2s ease;
+        }
+        
+        .btn-primary:hover {
+            border-color: var(--rose-dark);
+            background: var(--rose-dark);
+            transform: translateY(-1px);
+        }
+        
+        .records-heading {
+            margin: 27px 2px 12px;
+        }
+        
+        .records-heading h2 {
+            margin: 0;
+            font-size: 1.35rem;
+        }
+        
+        .records-heading p {
+            margin: 3px 0 0;
+            color: var(--muted);
+            font-size: .9rem;
+        }
+        
+        .history-controls {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 7px;
+            margin: 0 2px 12px;
+        }
+        
+        .history-date {
+            width: auto;
+            min-width: 155px;
+            min-height: 38px;
+            font-weight: 700;
+        }
+        
+        .history-button {
+            min-height: 38px;
+            border: 1px solid #e9bfd0;
+            border-radius: 8px;
+            color: var(--rose-dark);
+            background: #fff8fa;
+            font-size: .85rem;
+            font-weight: 700;
+        }
+        
+        .history-button:hover {
+            border-color: #e28da9;
+            color: #96395f;
+            background: #fbe8ee;
+        }
+        
+        .history-label {
+            margin-left: auto;
+            color: var(--muted);
+            font-size: .85rem;
+            font-weight: 700;
+        }
+        
+        .records-actions {
+            display: flex;
+            flex-shrink: 0;
+            gap: 8px;
+        }
+        
+        .btn-logout {
+            border: 1px solid #e9bfd0;
+            border-radius: 9px;
+            color: var(--rose-dark);
+            background: #fff8fa;
+            font-weight: 700;
+        }
+        
+        .btn-logout:hover {
+            border-color: #e28da9;
+            color: #96395f;
+            background: #fbe8ee;
+        }
+        
+        .btn-export {
+            flex-shrink: 0;
+            border: 1px solid #789381;
+            border-radius: 9px;
+            background: #789381;
+            font-weight: 700;
+        }
+        
+        .btn-export:hover {
+            border-color: #627a6b;
+            background: #627a6b;
+        }
+        
+        .btn-export:disabled {
+            border-color: #b9c6bd;
+            background: #b9c6bd;
+            cursor: not-allowed;
+        }
+        
+        .selection-column {
+            width: 48px;
+            text-align: center;
+        }
+        
+        .diagnosis-manager {
+            margin-top: 12px;
+            padding: 11px 12px;
+            border: 1px solid var(--line);
+            border-radius: 9px;
+            background: #fffaf9;
+        }
+        
+        .diagnosis-manager summary {
+            color: var(--rose-dark);
+            font-size: .88rem;
+            font-weight: 800;
+            cursor: pointer;
+        }
+        
+        .diagnosis-list {
+            display: grid;
+            gap: 8px;
+            margin-top: 12px;
+        }
+        
+        .diagnosis-entry,
+        .diagnosis-add-form {
+            display: grid;
+            grid-template-columns: minmax(90px, 1fr) 48px auto auto;
+            align-items: center;
+            gap: 7px;
+        }
+        
+        .diagnosis-entry .form-control,
+        .diagnosis-add-form .form-control {
+            min-height: 38px;
+            padding: 5px 8px;
+            font-size: .85rem;
+        }
+        
+        .diagnosis-entry input[type="color"],
+        .diagnosis-add-form input[type="color"] {
+            width: 44px;
+            padding: 4px;
+            cursor: pointer;
+        }
+        
+        .diagnosis-entry .btn,
+        .diagnosis-add-form .btn {
+            min-height: 36px;
+            padding: 5px 9px;
+            font-size: .8rem;
+            font-weight: 700;
+        }
+        
+        .diagnosis-add-form {
+            grid-template-columns: minmax(90px, 1fr) 48px auto;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid var(--line);
+        }
+        
+        .diagnosis-message {
+            min-height: 1.25rem;
+            margin: 7px 0 0;
+            color: var(--muted);
+            font-size: .8rem;
+        }
+        
+        .record-select,
+        #selectAllRecords {
+            width: 1rem;
+            height: 1rem;
+            accent-color: var(--rose);
+            cursor: pointer;
+        }
+        
+        .records-panel {
+            overflow: hidden;
+            animation: arrive .7s .18s ease-out both;
+        }
+        
+        .table {
+            color: var(--ink);
+        }
+        
+        .table thead th {
+            padding: 14px 13px;
+            border-color: #efcbd8;
+            background: #f8dce6;
+            color: #754558;
+            font-size: .82rem;
+            font-weight: 800;
+            white-space: nowrap;
+        }
+        
+        .table tbody td {
+            padding: 12px 13px;
+            border-color: #f2e1e6;
+            vertical-align: middle;
+        }
+        
+        .table tbody tr:nth-child(even) {
+            background: #fff8fa;
+        }
+        
+        .table tbody tr {
+            animation: row-in .35s ease-out both;
+        }
+        
+        @keyframes arrive {
+            from {
+                opacity: 0;
+                transform: translateY(11px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes tooth-float {
+            0%,
+            100% {
+                transform: translateY(0) rotate(-3deg);
+            }
+            50% {
+                transform: translateY(-9px) rotate(3deg);
+            }
+        }
+        
+        @keyframes fairy-drift {
+            0%,
+            100% {
+                transform: translate(0, 0) rotate(-5deg);
+            }
+            50% {
+                transform: translate(-8px, -8px) rotate(7deg);
+            }
+        }
+        
+        @keyframes twinkle {
+            0%,
+            100% {
+                opacity: .5;
+                transform: scale(.85);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.12);
+            }
+        }
+        
+        @keyframes row-in {
+            from {
+                opacity: 0;
+                transform: translateY(4px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .page-shell {
+                padding-top: 20px !important;
+            }
+            .hero {
+                min-height: 220px;
+                padding: 23px 20px;
+            }
+            .hero h1 {
+                max-width: 230px;
+                font-size: 1.65rem;
+            }
+            .hero-copy {
+                max-width: 68%;
+                align-self: flex-start;
+                margin-top: 7px;
+            }
+            .hero-copy p:last-child {
+                max-width: 200px;
+                font-size: .9rem;
+            }
+            .mascot-stage {
+                right: 0;
+                bottom: 0;
+                width: 180px;
+                height: 145px;
+            }
+            .mascot-tooth {
+                right: 2px;
+                bottom: 0;
+                font-size: 5rem;
+            }
+            .mascot-fairy {
+                top: 0;
+                right: 8px;
+                font-size: 2.5rem;
+            }
+            .form-panel .card-body {
+                padding: 20px 17px;
+            }
+            .records-heading {
+                align-items: flex-start !important;
+                gap: 12px;
+            }
+            .records-actions {
+                flex-direction: column-reverse;
+                align-items: stretch;
+            }
+            .history-controls {
+                gap: 6px;
+            }
+            .history-date {
+                min-width: 145px;
+                flex: 1;
+            }
+            .history-label {
+                width: 100%;
+                margin-left: 0;
+            }
+            .records-heading h2 {
+                font-size: 1.2rem;
+            }
+            .btn-export {
+                max-width: 160px;
+                white-space: normal;
+                font-size: .83rem;
+            }
+            .diagnosis-entry,
+            .diagnosis-add-form {
+                grid-template-columns: minmax(72px, 1fr) 42px auto auto;
+                gap: 5px;
+            }
+            .diagnosis-add-form {
+                grid-template-columns: minmax(72px, 1fr) 42px auto;
+            }
+            .diagnosis-entry .btn,
+            .diagnosis-add-form .btn {
+                padding: 5px 7px;
+                font-size: .73rem;
+            }
+        }
+        
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                scroll-behavior: auto !important;
+                animation-duration: .01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: .01ms !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <section id="authGate" class="auth-gate" aria-labelledby="loginTitle" hidden>
+        <div class="auth-panel">
+            <div class="auth-mascot" aria-hidden="true">🦷</div>
+            <h1 id="loginTitle">Masuk ke DentRecap</h1>
+            <p>Catatan pasien terlindungi. Masukkan kata sandi untuk melanjutkan.</p>
+            <form id="loginForm">
+                <label for="loginPassword">Kata sandi</label>
+                <div class="password-entry">
+                    <input id="loginPassword" class="form-control" type="password" autocomplete="current-password" required>
+                    <button id="togglePassword" class="password-toggle" type="button" aria-label="Tampilkan kata sandi" aria-pressed="false" title="Tampilkan kata sandi"><span id="passwordEye" aria-hidden="true">👁️</span></button>
+                </div>
+                <button id="loginButton" class="btn btn-primary w-100 mt-3" type="submit">Masuk <span aria-hidden="true">♥</span></button>
+                <p id="loginMessage" class="auth-message" role="status"></p>
+            </form>
+        </div>
+    </section>
+
+    <main id="appContent" class="container page-shell py-4 py-lg-5" hidden>
+        <header class="hero mb-4">
+            <div class="hero-copy">
+                <p class="eyebrow">Ruang kecil untuk senyum sehat</p>
+                <h1>DentRecap</h1>
+                <p>Catat pemeriksaan gigi dengan mudah dan rapi.</p>
+            </div>
+            <div class="mascot-stage" aria-hidden="true">
+                <span class="sparkle sparkle-one">✦</span>
+                <span class="mascot-tooth">🦷</span>
+                <span class="mascot-fairy">🧚🏻‍♀️</span>
+                <span class="sparkle sparkle-two">✧</span>
+            </div>
+        </header>
+
+        <section class="card form-panel mb-4" aria-label="Form rekam medis">
+            <div class="card-body">
+                <form id="recordForm">
+                    <div class="row mb-3">
+                        <div class="col-md-3">
+                            <label>Bulan Kunjungan</label>
+                            <select id="bulan" class="form-select" required>
+                                <option value="JAN">Januari</option>
+                                <option value="FEB">Februari</option>
+                                <option value="MAR">Maret</option>
+                                <option value="APR">April</option>
+                                <option value="MEI">Mei</option>
+                                <option value="JUN">Juni</option>
+                                <option value="JUL">Juli</option>
+                                <option value="AGST">Agustus</option>
+                                <option value="SEP">September</option>
+                                <option value="OKT">Oktober</option>
+                                <option value="NOV">November</option>
+                                <option value="DES">Desember</option>
+                            </select>
+                        </div>
+                        <div class="col-md-5">
+                            <label>Nama Pasien</label>
+                            <input type="text" id="nama" class="form-control" required>
+                        </div>
+                        <div class="col-md-2">
+                            <label>Umur</label>
+                            <input type="number" id="umur" class="form-control" min="0" required>
+                        </div>
+                        <div class="col-md-2">
+                            <label>Jenis Kelamin</label>
+                            <select id="gender" class="form-select" required>
+                                <option value="L">Laki-laki</option>
+                                <option value="P">Perempuan</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-8">
+                            <label>Hasil Pemeriksaan / Tindakan</label>
+                            <input type="text" id="tindakan" class="form-control" placeholder="Contoh: 84 & 85 PULPITIS" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label>Diagnosis (ICD-10)</label>
+                            <select id="icd" class="form-select" required>
+                            </select>
+                            <details class="diagnosis-manager">
+                                <summary>Kelola diagnosis</summary>
+                                <div id="diagnosisList" class="diagnosis-list"></div>
+                                <div id="diagnosisAddForm" class="diagnosis-add-form">
+                                    <input id="newDiagnosisCode" class="form-control" type="text" placeholder="Kode ICD-10" aria-label="Kode diagnosis baru">
+                                    <input id="newDiagnosisColor" class="form-control form-control-color" type="color" value="#e7b84b" aria-label="Warna diagnosis baru">
+                                    <button id="addDiagnosisButton" class="btn btn-primary" type="button">Tambah</button>
+                                </div>
+                                <p id="diagnosisMessage" class="diagnosis-message" role="status"></p>
+                            </details>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Simpan Data <span aria-hidden="true">✦</span></button>
+                </form>
+            </div>
+        </section>
+
+        <section aria-labelledby="recordsTitle">
+            <div class="records-heading d-flex justify-content-between align-items-center">
+                <div>
+                    <h2 id="recordsTitle">Data Tersimpan</h2>
+                    <p id="selectionStatus" role="status">Pilih catatan yang ingin dimasukkan ke rekap.</p>
+                </div>
+                <div class="records-actions">
+                    <button id="logoutButton" type="button" class="btn btn-logout">Keluar</button>
+                    <button id="exportSelected" type="button" class="btn btn-success btn-export" disabled>⬇ Download Pilihan (0)</button>
+                </div>
+            </div>
+
+            <div class="history-controls" aria-label="Pilih tanggal riwayat">
+                <button id="previousDay" type="button" class="btn history-button" aria-label="Hari sebelumnya">←</button>
+                <input id="historyDate" class="form-control history-date" type="date" aria-label="Tanggal catatan">
+                <button id="nextDay" type="button" class="btn history-button" aria-label="Hari berikutnya">→</button>
+                <button id="todayButton" type="button" class="btn history-button">Hari Ini</button>
+                <span id="historyLabel" class="history-label" role="status"></span>
+            </div>
+
+            <div class="table-responsive records-panel">
+                <table class="table table-bordered mb-0">
+                    <thead>
+                        <tr>
+                            <th class="selection-column"><input id="selectAllRecords" type="checkbox" aria-label="Pilih semua data" disabled></th>
+                            <th>Bulan</th>
+                            <th>Tanggal Dicatat</th>
+                            <th>Nama Pasien</th>
+                            <th>Umur Laki-laki</th>
+                            <th>Umur Perempuan</th>
+                            <th>Tindakan</th>
+                            <th>Kode ICD-10</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                        <!-- Data akan dimuat disini oleh JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        let diagnoses = [];
+        let selectedDate = '';
+        let lastKnownToday = '';
+
+        function formatDate(dateString) {
+            return new Intl.DateTimeFormat('id-ID', {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric',
+                timeZone: 'Asia/Jakarta'
+            }).format(new Date(`${dateString}T12:00:00+07:00`));
+        }
+
+        function updateHistoryLabel() {
+            const isToday = selectedDate === lastKnownToday;
+            document.getElementById('historyLabel').textContent = isToday ?
+                `Hari ini · ${formatDate(selectedDate)}` :
+                `Riwayat · ${formatDate(selectedDate)}`;
+        }
+
+        function setSelectedDate(dateString) {
+            selectedDate = dateString;
+            document.getElementById('historyDate').value = selectedDate;
+            updateHistoryLabel();
+            loadData();
+        }
+
+        // Fungsi untuk mengambil dan menampilkan data di tabel
+        async function loadData() {
+            const res = await fetch(`/api/records?date=${encodeURIComponent(selectedDate)}`);
+            if (!res.ok) throw new Error('Data tanggal ini gagal dimuat.');
+            const data = await res.json();
+            const tbody = document.getElementById('tableBody');
+            tbody.innerHTML = '';
+
+            data.forEach(row => {
+                // Konversi warna hex ExcelJS ke format CSS (hapus 2 huruf pertama 'FF' untuk opacity)
+                const cssColor = row.icd_warna ? `#${row.icd_warna.slice(-6)}` : '#ffffff';
+                const maleAge = row.gender === 'P' ? '' : row.umur;
+                const femaleAge = row.gender === 'P' ? row.umur : '';
+                tbody.innerHTML += `
+                    <tr>
+                        <td class="selection-column"><input class="record-select" type="checkbox" value="${row.id}" aria-label="Pilih baris ${row.id}"></td>
+                        <td>${row.bulan}</td>
+                        <td>${row.tanggal ? formatDate(row.tanggal) : ''}</td>
+                        <td>${row.nama}</td>
+                        <td>${maleAge}</td>
+                        <td>${femaleAge}</td>
+                        <td>${row.tindakan}</td>
+                        <td style="background-color: ${cssColor}; font-weight: bold;">${row.icd_kode}</td>
+                    </tr>
+                `;
+            });
+
+            if (data.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="8" class="py-4 text-center text-secondary">Belum ada catatan pada tanggal ini.</td></tr>';
+            }
+
+            updateExportControls();
+            updateHistoryLabel();
+        }
+
+        async function loadDiagnoses(selectedId) {
+            const response = await fetch('/api/diagnoses');
+            if (!response.ok) throw new Error('Diagnosis gagal dimuat.');
+            diagnoses = await response.json();
+
+            const diagnosisSelect = document.getElementById('icd');
+            diagnosisSelect.replaceChildren();
+            diagnoses.forEach(diagnosis => {
+                const option = document.createElement('option');
+                option.value = JSON.stringify({
+                    kode: diagnosis.kode,
+                    warna: diagnosis.warna
+                });
+                option.textContent = diagnosis.kode;
+                option.dataset.color = `#${diagnosis.warna.slice(-6)}`;
+                option.selected = selectedId ? diagnosis.id === selectedId : diagnosis.id === (diagnoses.length ? diagnoses[0].id : null);
+                diagnosisSelect.append(option);
+            });
+            diagnosisSelect.disabled = diagnoses.length === 0;
+            renderDiagnosisManager();
+        }
+
+        function renderDiagnosisManager() {
+            const list = document.getElementById('diagnosisList');
+            list.replaceChildren();
+
+            diagnoses.forEach(diagnosis => {
+                const entry = document.createElement('div');
+                entry.className = 'diagnosis-entry';
+
+                const codeInput = document.createElement('input');
+                codeInput.className = 'form-control';
+                codeInput.value = diagnosis.kode;
+                codeInput.setAttribute('aria-label', `Kode diagnosis ${diagnosis.kode}`);
+
+                const colorInput = document.createElement('input');
+                colorInput.className = 'form-control form-control-color';
+                colorInput.type = 'color';
+                colorInput.value = `#${diagnosis.warna.slice(-6)}`;
+                colorInput.setAttribute('aria-label', `Warna diagnosis ${diagnosis.kode}`);
+
+                const saveButton = document.createElement('button');
+                saveButton.className = 'btn btn-outline-secondary';
+                saveButton.type = 'button';
+                saveButton.textContent = 'Simpan';
+                saveButton.addEventListener('click', async() => {
+                    await saveDiagnosis(diagnosis.id, codeInput.value, colorInput.value);
+                });
+
+                const deleteButton = document.createElement('button');
+                deleteButton.className = 'btn btn-outline-danger';
+                deleteButton.type = 'button';
+                deleteButton.textContent = 'Hapus';
+                deleteButton.addEventListener('click', async() => {
+                    if (!window.confirm(`Hapus diagnosis ${diagnosis.kode}?`)) return;
+                    const response = await fetch(`/api/diagnoses/${diagnosis.id}`, {
+                        method: 'DELETE'
+                    });
+                    if (!response.ok) return showDiagnosisMessage('Diagnosis gagal dihapus.');
+                    showDiagnosisMessage(`${diagnosis.kode} dihapus.`);
+                    await loadDiagnoses();
+                });
+
+                entry.append(codeInput, colorInput, saveButton, deleteButton);
+                list.append(entry);
+            });
+        }
+
+        function showDiagnosisMessage(message) {
+            document.getElementById('diagnosisMessage').textContent = message;
+        }
+
+        async function saveDiagnosis(id, kode, warna) {
+            const response = await fetch(`/api/diagnoses/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    kode,
+                    warna
+                })
+            });
+            const result = await response.json();
+            if (!response.ok) return showDiagnosisMessage(result.error || 'Diagnosis gagal disimpan.');
+            showDiagnosisMessage('Diagnosis berhasil diperbarui.');
+            await loadDiagnoses(id);
+        }
+
+        document.getElementById('addDiagnosisButton').addEventListener('click', async() => {
+            const kodeInput = document.getElementById('newDiagnosisCode');
+            const warnaInput = document.getElementById('newDiagnosisColor');
+            if (!kodeInput.value.trim()) {
+                kodeInput.focus();
+                return;
+            }
+            const response = await fetch('/api/diagnoses', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    kode: kodeInput.value,
+                    warna: warnaInput.value
+                })
+            });
+            const result = await response.json();
+            if (!response.ok) return showDiagnosisMessage(result.error || 'Diagnosis gagal ditambahkan.');
+            kodeInput.value = '';
+            warnaInput.value = '#e7b84b';
+            showDiagnosisMessage(`${result.kode} berhasil ditambahkan.`);
+            await loadDiagnoses(result.id);
+        });
+
+        const tableBody = document.getElementById('tableBody');
+        const selectAllRecords = document.getElementById('selectAllRecords');
+        const exportSelected = document.getElementById('exportSelected');
+        const selectionStatus = document.getElementById('selectionStatus');
+
+        document.getElementById('historyDate').value = selectedDate;
+        document.getElementById('historyDate').addEventListener('change', (event) => {
+            if (event.target.value) setSelectedDate(event.target.value);
+        });
+
+        document.getElementById('previousDay').addEventListener('click', () => {
+            const date = new Date(`${selectedDate}T00:00:00Z`);
+            date.setUTCDate(date.getUTCDate() - 1);
+            setSelectedDate(date.toISOString().slice(0, 10));
+        });
+
+        document.getElementById('nextDay').addEventListener('click', () => {
+            const date = new Date(`${selectedDate}T00:00:00Z`);
+            date.setUTCDate(date.getUTCDate() + 1);
+            setSelectedDate(date.toISOString().slice(0, 10));
+        });
+
+        document.getElementById('todayButton').addEventListener('click', () => {
+            refreshForNewDay().then(() => setSelectedDate(lastKnownToday));
+        });
+
+        async function refreshForNewDay() {
+            try {
+                const response = await fetch('/api/session');
+                if (!response.ok) return;
+                const {
+                    today
+                } = await response.json();
+                if (today === lastKnownToday) return;
+                const wasShowingLiveDay = selectedDate === lastKnownToday;
+                lastKnownToday = today;
+                if (wasShowingLiveDay) setSelectedDate(today);
+                else updateHistoryLabel();
+            } catch {
+                return;
+            }
+        }
+
+        document.addEventListener('visibilitychange', () => {
+            if (document.visibilityState !== 'visible') return;
+            refreshForNewDay();
+            if (!appContent.hidden) loadData();
+        });
+        window.setInterval(refreshForNewDay, 60000);
+
+        function updateExportControls() {
+            const checkboxes = [...tableBody.querySelectorAll('.record-select')];
+            const selectedCount = checkboxes.filter(checkbox => checkbox.checked).length;
+            exportSelected.disabled = selectedCount === 0;
+            exportSelected.textContent = `⬇ Download Pilihan (${selectedCount})`;
+            selectAllRecords.disabled = checkboxes.length === 0;
+            selectAllRecords.checked = checkboxes.length > 0 && selectedCount === checkboxes.length;
+            selectAllRecords.indeterminate = selectedCount > 0 && selectedCount < checkboxes.length;
+            selectionStatus.textContent = selectedCount === 0 ?
+                'Pilih catatan yang ingin dimasukkan ke rekap.' :
+                `${selectedCount} catatan dipilih untuk rekap.`;
+        }
+
+        tableBody.addEventListener('change', (event) => {
+            if (event.target.matches('.record-select')) updateExportControls();
+        });
+
+        selectAllRecords.addEventListener('change', () => {
+            tableBody.querySelectorAll('.record-select').forEach(checkbox => {
+                checkbox.checked = selectAllRecords.checked;
+            });
+            updateExportControls();
+        });
+
+        exportSelected.addEventListener('click', async() => {
+            const ids = [...tableBody.querySelectorAll('.record-select:checked')]
+                .map(checkbox => checkbox.value);
+            if (ids.length === 0) return;
+
+            exportSelected.disabled = true;
+            selectionStatus.textContent = 'Menyiapkan file rekap...';
+            try {
+                const response = await fetch(`/api/export?ids=${encodeURIComponent(ids.join(','))}`);
+                if (!response.ok) throw new Error('Ekspor gagal. Coba lagi.');
+
+                const fileUrl = URL.createObjectURL(await response.blob());
+                const downloadLink = document.createElement('a');
+                downloadLink.href = fileUrl;
+                downloadLink.download = 'Rekap_Medis_Gigi_Terpilih.xlsx';
+                downloadLink.click();
+                setTimeout(() => URL.revokeObjectURL(fileUrl), 1000);
+                selectionStatus.textContent = `${ids.length} catatan berhasil disiapkan untuk diunduh.`;
+            } catch (error) {
+                selectionStatus.textContent = error.message;
+            } finally {
+                updateExportControls();
+            }
+        });
+
+        // Fungsi saat form disubmit
+        document.getElementById('recordForm').addEventListener('submit', async(e) => {
+            e.preventDefault();
+            if (!document.getElementById('icd').value) {
+                showDiagnosisMessage('Tambahkan diagnosis sebelum menyimpan data.');
+                return;
+            }
+            const icdData = JSON.parse(document.getElementById('icd').value);
+
+            const payload = {
+                bulan: document.getElementById('bulan').value,
+                nama: document.getElementById('nama').value,
+                umur: document.getElementById('umur').value,
+                gender: document.getElementById('gender').value,
+                tindakan: document.getElementById('tindakan').value,
+                icd_kode: icdData.kode
+            };
+
+            const response = await fetch('/api/records', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            });
+            if (!response.ok) {
+                const result = await response.json();
+                showDiagnosisMessage(result.error || 'Data gagal disimpan.');
+                return;
+            }
+
+            document.getElementById('recordForm').reset();
+            await refreshForNewDay();
+            if (selectedDate !== lastKnownToday) setSelectedDate(lastKnownToday);
+            else loadData();
+        });
+
+        const authGate = document.getElementById('authGate');
+        const appContent = document.getElementById('appContent');
+        const loginForm = document.getElementById('loginForm');
+        const loginButton = document.getElementById('loginButton');
+        const loginMessage = document.getElementById('loginMessage');
+        const loginPassword = document.getElementById('loginPassword');
+        const togglePassword = document.getElementById('togglePassword');
+        let loginLockedUntil = 0;
+        let loginCountdown = null;
+
+        togglePassword.addEventListener('click', () => {
+            const revealPassword = loginPassword.type === 'password';
+            loginPassword.type = revealPassword ? 'text' : 'password';
+            togglePassword.setAttribute('aria-pressed', String(revealPassword));
+            togglePassword.setAttribute('aria-label', revealPassword ? 'Sembunyikan kata sandi' : 'Tampilkan kata sandi');
+            togglePassword.title = revealPassword ? 'Sembunyikan kata sandi' : 'Tampilkan kata sandi';
+            document.getElementById('passwordEye').textContent = revealPassword ? '🙈' : '👁️';
+        });
+
+        function startLoginCountdown(seconds) {
+            loginLockedUntil = Date.now() + seconds * 1000;
+            if (loginCountdown) window.clearInterval(loginCountdown);
+
+            const updateCountdown = () => {
+                const remaining = Math.max(0, Math.ceil((loginLockedUntil - Date.now()) / 1000));
+                if (remaining === 0) {
+                    window.clearInterval(loginCountdown);
+                    loginCountdown = null;
+                    loginButton.disabled = false;
+                    loginMessage.textContent = 'Silakan coba masuk kembali.';
+                    return;
+                }
+
+                const minutes = Math.floor(remaining / 60);
+                const secondsLeft = String(remaining % 60).padStart(2, '0');
+                loginButton.disabled = true;
+                loginMessage.textContent = `Terlalu banyak percobaan. Coba lagi dalam ${minutes}:${secondsLeft}.`;
+            };
+
+            updateCountdown();
+            loginCountdown = window.setInterval(updateCountdown, 1000);
+        }
+
+        function showApp() {
+            authGate.hidden = true;
+            appContent.hidden = false;
+            Promise.all([loadDiagnoses(), loadData()]).catch(error => {
+                showDiagnosisMessage(error.message);
+            });
+        }
+
+        loginForm.addEventListener('submit', async(event) => {
+            event.preventDefault();
+            loginButton.disabled = true;
+            loginMessage.textContent = 'Memeriksa kata sandi...';
+            try {
+                const response = await fetch('/api/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        password: document.getElementById('loginPassword').value
+                    })
+                });
+                const result = await response.json();
+                if (!response.ok) {
+                    if (response.status === 429) {
+                        const retryAfter = Number(response.headers.get('Retry-After')) || 15 * 60;
+                        startLoginCountdown(retryAfter);
+                        return;
+                    }
+                    loginMessage.textContent = result.error || 'Login gagal.';
+                    return;
+                }
+                loginForm.reset();
+                loginMessage.textContent = '';
+                showApp();
+            } catch {
+                loginMessage.textContent = 'Tidak dapat menghubungi server.';
+            } finally {
+                if (Date.now() >= loginLockedUntil) loginButton.disabled = false;
+            }
+        });
+
+        document.getElementById('logoutButton').addEventListener('click', async() => {
+            await fetch('/api/logout', {
+                method: 'POST'
+            });
+            appContent.hidden = true;
+            authGate.hidden = false;
+        });
+
+        fetch('/api/session').then(async(response) => {
+            const sessionState = await response.json();
+            lastKnownToday = sessionState.today;
+            selectedDate = sessionState.today;
+            document.getElementById('historyDate').value = selectedDate;
+            updateHistoryLabel();
+            if (sessionState.authenticated) return showApp();
+            authGate.hidden = false;
+        }).catch(() => {
+            authGate.hidden = false;
+            loginMessage.textContent = 'Tidak dapat menghubungi server.';
+        });
+    </script>
+</body>
+
+</html>

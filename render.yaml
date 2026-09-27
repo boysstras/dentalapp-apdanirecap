@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: dentrecap
+    runtime: node
+    plan: starter
+    buildCommand: npm ci
+    startCommand: npm start
+    healthCheckPath: /api/session
+    disk:
+      name: dentrecap-data
+      mountPath: /var/data
+      sizeGB: 1
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DB_PATH
+        value: /var/data/rekam_medis.db
+      - key: SESSION_SECRET
+        generateValue: true
+      - key: APP_PASSWORD
+        sync: false

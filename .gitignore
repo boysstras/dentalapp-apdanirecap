@@ -1,0 +1,16 @@
+node_modules/
+rekam_medis.db
+rekam_medis.db-shm
+rekam_medis.db-wal
+*.db
+*.db-shm
+*.db-wal
+*.xlsx
+~$*.xlsx
+*.sqlite
+*.sqlite-*
+.env
+.env.*
+!.env.example
+Thumbs.db
+.DS_Store
